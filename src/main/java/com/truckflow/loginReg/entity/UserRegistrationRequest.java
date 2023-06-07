@@ -1,33 +1,33 @@
 package com.truckflow.loginReg.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+import java.lang.reflect.Array;
+import java.util.Date;
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserRegistrationRequest {
 
+    private String name;
     private String email;
-    private String password;
-    private String displayName;
+    private String Password;
+    private String Role;
+    private int phone;
+    private String Profileimage;
+    //private byte[] profileimage;
+    private Date createdDate;
+    private String streetNumber;
+    private String streetName;
+    private String unitNumber;
+    private String city;
+    private String province;
+    private String postalCode;
 
-    // getters and setters
-    public String getEmail() {
-        return email;
-    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
 }
