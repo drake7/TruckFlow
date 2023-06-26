@@ -3,14 +3,12 @@ package com.truckflow.loginReg.Controller;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.UserRecord;
 import com.google.firebase.cloud.FirestoreClient;
+import com.truckflow.loginReg.configuration.FileUpload;
 import com.truckflow.loginReg.entity.UserRegistrationRequest;
 import com.truckflow.loginReg.entity.UserService;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -19,17 +17,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+
 @RestController
 public class UserController {
 
-   // public FirebaseStorageService FirebaseStorageService;
+
 
     @Autowired
-    public UserController() {
+    public UserController(FileUpload fileUpload) {
+        this.fileUpload = fileUpload;
     }
 
     @Autowired
     private UserService userService;
+
+    private final FileUpload fileUpload;
 
 
     @GetMapping("/getUser")
@@ -58,13 +64,18 @@ public class UserController {
 
         // Convert the image file to a byte array
         byte[] imageBytes = image.getBytes();
+
+
         String encodedImage = Base64.getEncoder().encodeToString(imageBytes);
 
         user.setProfileimage(encodedImage);
-        //upload image in firestore
-       // String imageUrl = FirebaseStorageService.uploadImage(imageBytes);
 
-        return userService.saveUser(user);
+        String imageURL = fileUpload.uploadFile(image);
+        userService.saveUser(user);
+        return "Image uploaded successfully. Image URL: " + imageURL + "and user" + user;
+
+
+//        return userService.saveUser(user);
     }
 
     @DeleteMapping("/users/{name}")
@@ -112,6 +123,8 @@ public class UserController {
             return "No users with name: " + name + " found.";
         }
     }
+
+
 
 
 }
