@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UserRegistrationRequest {
 
-    private String user_id;
+//    private String user_id;
     private String name;
     private String email;
     private String Password;
